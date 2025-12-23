@@ -1,0 +1,219 @@
+"use client";
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { ArrowRight, TrendingUp, Box, Settings, Thermometer, AlertCircle, Activity } from "lucide-react";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import SensorDebugPanel from "@/components/SensorDebugPanel";
+
+/**
+ * Dashboard Page
+ * 
+ * Premium dashboard with animated statistics and interactive cards.
+ * Features Framer Motion animations for smooth number counting and card entrances.
+ */
+export default function Dashboard() {
+  // Animated counter hook
+  const useCountUp = (end: number, duration: number = 2000) => {
+    const [count, setCount] = useState(0);
+    
+    useEffect(() => {
+      let startTime: number;
+      const startValue = 0;
+      
+      const animate = (currentTime: number) => {
+        if (!startTime) startTime = currentTime;
+        const progress = Math.min((currentTime - startTime) / duration, 1);
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        setCount(Math.floor(startValue + (end - startValue) * easeOutQuart));
+        
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        }
+      };
+      
+      requestAnimationFrame(animate);
+    }, [end, duration]);
+    
+    return count;
+  };
+
+  const totalConfigs = useCountUp(12);
+  const simulationsRun = useCountUp(1234);
+  const temperature = useCountUp(4);
+
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Page Header with fade-in */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="flex items-center justify-between flex-wrap gap-4"
+      >
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-[#22d3ee] via-[#22c55e] to-[#a855f7] bg-clip-text text-transparent">
+            Dashboard
+          </h1>
+          <p className="text-slate-300">
+            Overview and management of crate shelf configurations
+          </p>
+        </div>
+        <Link href="/simulation">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Button className="bg-gradient-to-r from-[#22d3ee] to-[#22c55e] text-slate-950 font-semibold rounded-full px-6 py-2">
+              View Simulation
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </motion.div>
+        </Link>
+      </motion.div>
+
+      {/* Stats Cards with animated numbers */}
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="grid gap-4 md:grid-cols-2 lg:grid-cols-4"
+      >
+        {[
+          {
+            icon: Box,
+            label: "Total Configurations",
+            value: totalConfigs,
+            suffix: "",
+            description: "Active shelf arrangements",
+            color: "text-primary",
+          },
+          {
+            icon: TrendingUp,
+            label: "Simulations Run",
+            value: simulationsRun,
+            suffix: "",
+            description: "+12% from last month",
+            color: "text-primary",
+          },
+          {
+            icon: Thermometer,
+            label: "Temperature",
+            value: temperature,
+            suffix: "°C",
+            description: "Cold storage optimal",
+            color: "text-cyan-400",
+          },
+          {
+            icon: Activity,
+            label: "System Status",
+            value: "Operational",
+            suffix: "",
+            description: "All systems running normally",
+            color: "text-green-400",
+          },
+        ].map((stat, index) => (
+          <motion.div key={stat.label} variants={itemVariants}>
+            <Card className="glass-card cursor-pointer border border-transparent transition-all duration-300 ease-out hover:-translate-y-[3px] hover:shadow-[0_0_30px_rgba(34,211,238,0.45)] hover:ring-2 hover:ring-cyan-400/60 hover:brightness-110 hover:border-cyan-400/40 hover:scale-[1.015]">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-slate-100">{stat.label}</CardTitle>
+                <motion.div
+                  animate={{ rotate: [0, 5, -5, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                >
+                  <stat.icon className={`h-5 w-5 ${stat.color}`} />
+                </motion.div>
+              </CardHeader>
+              <CardContent>
+                <motion.div
+                  key={stat.value}
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ type: "spring", stiffness: 200 }}
+                  className={`text-2xl font-bold ${stat.color}`}
+                >
+                  {typeof stat.value === "number" ? stat.value.toLocaleString() : stat.value}
+                  {stat.suffix}
+                </motion.div>
+                <p className="text-xs text-slate-500 mt-1">{stat.description}</p>
+              </CardContent>
+            </Card>
+          </motion.div>
+        ))}
+      </motion.div>
+
+      {/* Quick Actions with hover animations */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.5 }}
+      >
+        <Card className="glass-card">
+          <CardHeader>
+            <CardTitle>Quick Actions</CardTitle>
+            <CardDescription>
+              Common tasks and configurations
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <Link href="/simulation">
+              <motion.div
+                whileHover={{ scale: 1.02, x: 4 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Button variant="outline" className="w-full justify-start rounded-full">
+                  <Box className="mr-2 h-4 w-4" />
+                  Create New Simulation
+                </Button>
+              </motion.div>
+            </Link>
+            <motion.div
+              whileHover={{ scale: 1.02, x: 4 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Button variant="outline" className="w-full justify-start rounded-full">
+                <Settings className="mr-2 h-4 w-4" />
+                Configure Settings
+              </Button>
+            </motion.div>
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {/* Sensor Debug Panel */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4, duration: 0.5 }}
+      >
+        <SensorDebugPanel />
+      </motion.div>
+    </div>
+  );
+}
+

@@ -1,0 +1,310 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Blueprint-style background */
+.blueprint-bg {
+  --grid-color: rgba(51, 65, 85, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background-color: oklch(0.1 0 0);
+  background-image: 
+    linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center center;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* Smooth transitions */
+* {
+  transition: color 0.2s, background-color 0.2s, border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: oklch(0.1 0 0);
+}
+
+::-webkit-scrollbar-thumb {
+  background: oklch(0.3 0 0);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.4 0 0);
+}
+
+/* Animation classes */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.glow {
+  text-shadow: 0 0 10px rgba(45, 212, 191, 0.5);
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 15px rgba(45, 212, 191, 0.3);
+}
+
+/* Custom utility classes */
+.text-gradient {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(to right, #2dd4bf, #3b82f6);
+}
+
+.card {
+  background: oklch(0.15 0.02 240 / 0.9);
+  backdrop-filter: blur(8px);
+  border: 1px solid oklch(0.25 0.02 240);
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.card-hover:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  transform: translateY(-2px);
+  border-color: oklch(0.4 0.1 200);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --radius: 0.625rem;
+  /* Futuristic Warehouse Control Room Theme */
+  /* Deep navy to black gradient backgrounds */
+  --background: oklch(0.08 0.02 240); /* Deep navy, almost black */
+  --foreground: oklch(0.95 0.01 240); /* Slate-100 equivalent */
+  
+  /* Card surfaces - dark navy with transparency */
+  --card: oklch(0.15 0.02 240 / 0.9); /* rgba(15,23,42,0.9) equivalent */
+  --card-foreground: oklch(0.95 0.01 240);
+  --popover: oklch(0.15 0.02 240 / 0.9);
+  --popover-foreground: oklch(0.95 0.01 240);
+  
+  /* Primary accent - cyan/teal gradient */
+  --primary: oklch(0.70 0.15 190); /* Cyan #22d3ee */
+  --primary-foreground: oklch(0.12 0.02 240); /* Dark text on light bg */
+  
+  /* Secondary surfaces */
+  --secondary: oklch(0.20 0.02 240);
+  --secondary-foreground: oklch(0.95 0.01 240);
+  
+  /* Muted elements */
+  --muted: oklch(0.20 0.02 240);
+  --muted-foreground: oklch(0.50 0.01 240); /* Slate-500 equivalent */
+  
+  /* Accent matching primary */
+  --accent: oklch(0.70 0.15 190);
+  --accent-foreground: oklch(0.12 0.02 240);
+  
+  /* Destructive (red) */
+  --destructive: oklch(0.65 0.18 25);
+  
+  /* Borders - subtle slate with transparency */
+  --border: oklch(0.60 0.01 240 / 0.25); /* rgba(148,163,184,0.25) */
+  --input: oklch(0.20 0.02 240);
+  --ring: oklch(0.70 0.15 190);
+  
+  /* Chart colors - cyan/teal/green gradient variants */
+  --chart-1: oklch(0.70 0.15 190); /* Cyan #22d3ee */
+  --chart-2: oklch(0.65 0.15 160); /* Teal #22c55e */
+  --chart-3: oklch(0.75 0.12 200); /* Lighter cyan */
+  --chart-4: oklch(0.68 0.10 170); /* Softer teal */
+  --chart-5: oklch(0.72 0.08 180); /* Muted cyan */
+  
+  /* Sidebar */
+  --sidebar: oklch(0.10 0.02 240 / 0.95); /* #020617/95 */
+  --sidebar-foreground: oklch(0.95 0.01 240);
+  --sidebar-primary: oklch(0.70 0.15 190);
+  --sidebar-primary-foreground: oklch(0.12 0.02 240);
+  --sidebar-accent: oklch(0.20 0.02 240);
+  --sidebar-accent-foreground: oklch(0.95 0.01 240);
+  --sidebar-border: oklch(0.60 0.01 240 / 0.25);
+  --sidebar-ring: oklch(0.70 0.15 190);
+}
+
+.dark {
+  /* Same as root for consistent futuristic dark theme */
+  --background: oklch(0.08 0.02 240);
+  --foreground: oklch(0.95 0.01 240);
+  --card: oklch(0.15 0.02 240 / 0.9);
+  --card-foreground: oklch(0.95 0.01 240);
+  --popover: oklch(0.15 0.02 240 / 0.9);
+  --popover-foreground: oklch(0.95 0.01 240);
+  --primary: oklch(0.70 0.15 190);
+  --primary-foreground: oklch(0.12 0.02 240);
+  --secondary: oklch(0.20 0.02 240);
+  --secondary-foreground: oklch(0.95 0.01 240);
+  --muted: oklch(0.20 0.02 240);
+  --muted-foreground: oklch(0.50 0.01 240);
+  --accent: oklch(0.70 0.15 190);
+  --accent-foreground: oklch(0.12 0.02 240);
+  --destructive: oklch(0.65 0.18 25);
+  --border: oklch(0.60 0.01 240 / 0.25);
+  --input: oklch(0.20 0.02 240);
+  --ring: oklch(0.70 0.15 190);
+  --chart-1: oklch(0.70 0.15 190);
+  --chart-2: oklch(0.65 0.15 160);
+  --chart-3: oklch(0.75 0.12 200);
+  --chart-4: oklch(0.68 0.10 170);
+  --chart-5: oklch(0.72 0.08 180);
+  --sidebar: oklch(0.10 0.02 240 / 0.95);
+  --sidebar-foreground: oklch(0.95 0.01 240);
+  --sidebar-primary: oklch(0.70 0.15 190);
+  --sidebar-primary-foreground: oklch(0.12 0.02 240);
+  --sidebar-accent: oklch(0.20 0.02 240);
+  --sidebar-accent-foreground: oklch(0.95 0.01 240);
+  --sidebar-border: oklch(0.60 0.01 240 / 0.25);
+  --sidebar-ring: oklch(0.70 0.15 190);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Animated grid background for futuristic warehouse theme */
+.animated-grid-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.animated-grid-background::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(34, 211, 238, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.04) 1px, transparent 1px);
+  background-size: 50px 50px;
+  background-position: 0 0, 0 0;
+  animation: grid-shimmer 20s ease-in-out infinite;
+}
+
+.animated-grid-background::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(34, 211, 238, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.06) 1px, transparent 1px);
+  background-size: 100px 100px;
+  background-position: 0 0, 0 0;
+  animation: grid-parallax 30s linear infinite;
+}
+
+@keyframes grid-shimmer {
+  0%, 100% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translate(2px, 2px);
+  }
+}
+
+@keyframes grid-parallax {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(50px, 50px);
+  }
+}
+
+/* Glassmorphism utility classes - Futuristic premium styling */
+.glass-card {
+  background: rgba(15, 23, 42, 0.9);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 1rem;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.9);
+}
+
+/* Futuristic neon glow effects */
+.neon-glow {
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.35),
+              0 0 24px rgba(34, 211, 238, 0.25),
+              0 0 36px rgba(34, 211, 238, 0.15);
+}
+
+.neon-glow-sm {
+  box-shadow: 0 0 6px rgba(34, 211, 238, 0.35),
+              0 0 12px rgba(34, 211, 238, 0.25);
+}
